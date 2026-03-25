@@ -33,6 +33,7 @@ class Valid{
         }
         if (!empty($errors)) {
             throw new \Exception(implode(", ", $errors), 400);
+            exit;
         }
         
         $this->title = strip_tags($data['title']);

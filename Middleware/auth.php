@@ -30,6 +30,7 @@ class AUTH {
 
         if (!$decoded) {
             throw new \Exception("Invalid or expired token", 401);
+            exit;
         }
 
         // data مخزنة كـ stdObject في JWT — نقرأها صح

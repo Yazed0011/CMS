@@ -37,14 +37,14 @@ class Refresh {
         }
     }
 
-    public function validateRefreshToken(string $token): bool {
+    public function validateRefreshToken(string $token): array|false {
         $this->token = $token;
         try {
             $stmt = $this->conn->prepare("SELECT * FROM refresh_tokens WHERE token = :token AND expires_at > NOW()");
             $stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
             $stmt->execute();
-            $refreshToken = $stmt->fetch(PDO::FETCH_ASSOC);
-            return (bool) $refreshToken;  // ← تصحيح: return bool
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? ['user_id' => (int)$result['user_id']] : false; // 
         } catch (PDOException $e) {
             error_log($e->getMessage());
             throw new \Exception("ERROR SERVER", 500);
